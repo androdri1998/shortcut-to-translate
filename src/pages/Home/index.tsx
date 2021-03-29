@@ -14,7 +14,7 @@ import {
   ContainerWords,
 } from './styles';
 
-import { asyncListWords } from '../../store/actions/words.actions';
+import { asyncSaveNewWords } from '../../store/actions/words.actions';
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
 
   const formatWords = useCallback(() => {
     if (wordsText) {
-      dispatch(asyncListWords({ wordsText }));
+      dispatch(asyncSaveNewWords({ wordsText }));
     }
   }, [dispatch, wordsText]);
 

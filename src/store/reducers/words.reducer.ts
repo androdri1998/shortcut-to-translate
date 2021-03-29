@@ -1,13 +1,6 @@
 /* eslint-disable camelcase */
 import wordsActions from '../actions/words.actions';
-
-type TWord = {
-  date: string;
-  word: string;
-  word_sanitalized: string;
-  url: string;
-  id: string;
-};
+import { TWord } from '../../@types';
 
 export interface IWordsState {
   words: TWord[];

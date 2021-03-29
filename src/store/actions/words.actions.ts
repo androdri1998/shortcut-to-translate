@@ -1,15 +1,17 @@
 /* eslint-disable camelcase */
+import { TWord } from '../../@types';
+
 interface IWordsActions {
   ASYNC_FETCH_RECENT_WORDS: string;
   FETCH_RECENT_WORDS: string;
-  ASYNC_LIST_WORDS: string;
+  ASYNC_SAVE_NEW_WORDS: string;
   CHANGE_LIST_WORDS: string;
 }
 
 const wordsActions = {
   ASYNC_FETCH_RECENT_WORDS: '@words/ASYNC_FETCH_RECENT_WORDS',
   FETCH_RECENT_WORDS: '@words/FETCH_RECENT_WORDS',
-  ASYNC_LIST_WORDS: '@words/ASYNC_LIST_WORDS',
+  ASYNC_SAVE_NEW_WORDS: '@words/ASYNC_SAVE_NEW_WORDS',
   CHANGE_LIST_WORDS: '@words/CHANGE_LIST_WORDS',
 } as IWordsActions;
 
@@ -25,29 +27,21 @@ interface IAsyncListWordsDTO {
   wordsText: string;
 }
 
-interface IAsyncListWordsResponse {
+interface IAsyncSaveNewWordsResponse {
   type: string;
   payload: {
     wordsText: string;
   };
 }
 
-export const asyncListWords = ({
+export const asyncSaveNewWords = ({
   wordsText,
-}: IAsyncListWordsDTO): IAsyncListWordsResponse => ({
-  type: wordsActions.ASYNC_LIST_WORDS,
+}: IAsyncListWordsDTO): IAsyncSaveNewWordsResponse => ({
+  type: wordsActions.ASYNC_SAVE_NEW_WORDS,
   payload: {
     wordsText,
   },
 });
-
-type TWord = {
-  date: string;
-  word: string;
-  word_sanitalized: string;
-  url: string;
-  id: string;
-};
 
 interface IChangeListWordsDTO {
   words: TWord[];
