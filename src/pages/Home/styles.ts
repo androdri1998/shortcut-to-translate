@@ -68,12 +68,7 @@ export const SendButton = styled.button<IPropsSendButton>`
   }
 `;
 
-interface IPropsContainerWords {
-  color: string;
-  background_color: string;
-}
-
-export const ContainerWords = styled.section<IPropsContainerWords>`
+export const ContainerWords = styled.section`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -93,18 +88,5 @@ export const ContainerWords = styled.section<IPropsContainerWords>`
   .list-words__warning {
     font-size: 1em;
     font-weight: 500;
-  }
-
-  .list-words__word {
-    margin-right: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-
-    border-radius: 40px;
-    text-decoration: none;
-    background-color: ${props => props.background_color};
-    color: ${props => props.color};
-    font-weight: bold;
-    cursor: pointer;
   }
 `;

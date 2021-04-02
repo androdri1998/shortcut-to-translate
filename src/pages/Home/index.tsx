@@ -1,6 +1,8 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Word from '../../components/Word';
 
 import { IReducerState } from '../../store/rootReducer';
 import colors from '../../utils/colors';
@@ -14,13 +16,22 @@ import {
   ContainerWords,
 } from './styles';
 
-import { asyncSaveNewWords } from '../../store/actions/words.actions';
+import {
+  asyncSaveNewWords,
+  asyncFetchRecentWords,
+} from '../../store/actions/words.actions';
 
 const HomePage: React.FC = () => {
   const dispatch = useDispatch();
   const words = useSelector((state: IReducerState) => state.wordsReducer.words);
 
   const [wordsText, setWordsText] = useState('');
+
+  useEffect(() => {
+    if (!wordsText) {
+      dispatch(asyncFetchRecentWords());
+    }
+  }, [wordsText, dispatch]);
 
   const handleWordsText = useCallback(event => {
     setWordsText(event.target.value);
@@ -59,24 +70,17 @@ const HomePage: React.FC = () => {
           </SendButton>
         </ContainerButtons>
       </ContainerInputText>
-      <ContainerWords
-        color={colors.light.home.words.color}
-        background_color={colors.light.home.words.background_color}
-      >
+      <ContainerWords>
         <span className="list-words__title">
-          {`You've ${words.length} new words`}
+          {`You've ${words.length} listed words`}
         </span>
         {words.length > 0 ? (
           words.map((currentWord, index) => (
-            <a
-              className="list-words__word"
+            <Word
+              url={currentWord.url}
+              word={currentWord.word}
               key={`${currentWord.word}-${index}`}
-              href={currentWord.url}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {currentWord.word}
-            </a>
+            />
           ))
         ) : (
           <span className="list-words__warning">No words to be listed</span>

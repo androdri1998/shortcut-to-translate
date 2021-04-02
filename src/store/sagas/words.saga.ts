@@ -3,6 +3,7 @@ import { takeEvery, put, ForkEffect } from 'redux-saga/effects';
 import { v4 as uuidv4 } from 'uuid';
 
 import SaveWordsSevice from '../../services/SaveWordsSevice';
+import ListRecentWordsService from '../../services/ListRecentWordsService';
 import StorageProvider from '../../providers/implementations/StorageProvider';
 
 import appConfig from '../../config/app';
@@ -10,7 +11,16 @@ import wordsActions, { changeListWords } from '../actions/words.actions';
 import { TWord } from '../../@types';
 
 function* asyncFetchRecentWords() {
-  yield put({ type: wordsActions.FETCH_RECENT_WORDS });
+  const storageProvider = new StorageProvider();
+  const listRecentWordsService = new ListRecentWordsService(storageProvider);
+
+  const { recent_words: recentWords } = listRecentWordsService.execute();
+
+  yield put(
+    changeListWords({
+      words: recentWords,
+    }),
+  );
 }
 
 interface IAsyncSaveNewWordsDTO {
