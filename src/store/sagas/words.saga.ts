@@ -4,11 +4,32 @@ import { v4 as uuidv4 } from 'uuid';
 
 import SaveWordsSevice from '../../services/SaveWordsSevice';
 import ListRecentWordsService from '../../services/ListRecentWordsService';
+import ListAllWordsService from '../../services/ListAllWordsService';
 import StorageProvider from '../../providers/implementations/StorageProvider';
 
 import appConfig from '../../config/app';
 import wordsActions, { changeListWords } from '../actions/words.actions';
 import { TWord } from '../../@types';
+
+interface IAsyncFetchAllWordsDTO {
+  type: string;
+  payload: {
+    search: string;
+  };
+}
+
+function* asyncFetchAllWords({ payload: { search } }: IAsyncFetchAllWordsDTO) {
+  const storageProvider = new StorageProvider();
+  const listAllWordsService = new ListAllWordsService(storageProvider);
+
+  const { all_words: allWords } = listAllWordsService.execute({ search });
+
+  yield put(
+    changeListWords({
+      words: allWords,
+    }),
+  );
+}
 
 function* asyncFetchRecentWords() {
   const storageProvider = new StorageProvider();
@@ -75,6 +96,7 @@ export default function* wordsSaga(): Generator<
   void,
   unknown
 > {
+  yield takeEvery(wordsActions.ASYNC_FETCH_ALL_WORDS, asyncFetchAllWords);
   yield takeEvery(wordsActions.ASYNC_FETCH_RECENT_WORDS, asyncFetchRecentWords);
   yield takeEvery(wordsActions.ASYNC_SAVE_NEW_WORDS, asyncSaveNewWords);
 }

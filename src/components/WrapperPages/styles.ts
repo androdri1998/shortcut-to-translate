@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import styled from 'styled-components';
 
+import { Link } from 'react-router-dom';
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -41,9 +43,12 @@ interface IPropsItemNav {
   color: string;
 }
 
-export const ItemNav = styled.span<IPropsItemNav>`
+export const ItemNav = styled(Link)<IPropsItemNav>`
+  margin-left: 10px;
+
   font-size: 1.2em;
   font-weight: 400;
   cursor: pointer;
   color: ${props => props.color};
+  text-decoration: none;
 `;

@@ -2,16 +2,38 @@
 import { TWord } from '../../@types';
 
 interface IWordsActions {
+  ASYNC_FETCH_ALL_WORDS: string;
   ASYNC_FETCH_RECENT_WORDS: string;
   ASYNC_SAVE_NEW_WORDS: string;
   CHANGE_LIST_WORDS: string;
 }
 
 const wordsActions = {
+  ASYNC_FETCH_ALL_WORDS: '@words/ASYNC_FETCH_ALL_WORDS',
   ASYNC_FETCH_RECENT_WORDS: '@words/ASYNC_FETCH_RECENT_WORDS',
   ASYNC_SAVE_NEW_WORDS: '@words/ASYNC_SAVE_NEW_WORDS',
   CHANGE_LIST_WORDS: '@words/CHANGE_LIST_WORDS',
 } as IWordsActions;
+
+interface IAsyncFetchAllWordsDTO {
+  search: string;
+}
+
+interface IAsyncFetchAllWordsResponse {
+  type: string;
+  payload: {
+    search: string;
+  };
+}
+
+export const asyncFetchAllWords = ({
+  search,
+}: IAsyncFetchAllWordsDTO): IAsyncFetchAllWordsResponse => ({
+  type: wordsActions.ASYNC_FETCH_ALL_WORDS,
+  payload: {
+    search,
+  },
+});
 
 interface IAsyncFetchRecentWordsResponse {
   type: string;
