@@ -6,6 +6,8 @@ import SaveWordsSevice from '../../services/SaveWordsSevice';
 import ListRecentWordsService from '../../services/ListRecentWordsService';
 import ListAllWordsService from '../../services/ListAllWordsService';
 import RemoveWordService from '../../services/RemoveWordService';
+import FavoriteWordService from '../../services/FavoriteWordService';
+import RemoveFavoriteWordService from '../../services/RemoveFavoriteWordService';
 import StorageProvider from '../../providers/implementations/StorageProvider';
 
 import appConfig from '../../config/app';
@@ -73,6 +75,70 @@ function* asyncRemoveWord({ payload: { wordId } }: IAsyncRemoveWordDTO) {
   );
 }
 
+interface IAsyncFavoriteWordDTO {
+  type: string;
+  payload: {
+    wordId: string;
+  };
+}
+
+function* asyncFavoriteWord({ payload: { wordId } }: IAsyncFavoriteWordDTO) {
+  const storageProvider = new StorageProvider();
+  const favoriteWordService = new FavoriteWordService(storageProvider);
+
+  const wordUpdated: TWord | null = favoriteWordService.execute({ wordId });
+
+  let newWords: TWord[] = [];
+  if (newWords) {
+    const currentWords: TWord[] = yield select(
+      state => state.wordsReducer.words,
+    );
+    newWords = currentWords.filter(word => word.id !== wordId);
+    newWords = [wordUpdated as TWord, ...newWords];
+  }
+
+  yield put(
+    changeListWords({
+      words: newWords,
+    }),
+  );
+}
+
+interface IAsyncRemoveFavoriteWordDTO {
+  type: string;
+  payload: {
+    wordId: string;
+  };
+}
+
+function* asyncRemoveFavoriteWord({
+  payload: { wordId },
+}: IAsyncRemoveFavoriteWordDTO) {
+  const storageProvider = new StorageProvider();
+  const removeFavoriteWordService = new RemoveFavoriteWordService(
+    storageProvider,
+  );
+
+  const wordUpdated: TWord | null = removeFavoriteWordService.execute({
+    wordId,
+  });
+
+  let newWords: TWord[] = [];
+  if (newWords) {
+    const currentWords: TWord[] = yield select(
+      state => state.wordsReducer.words,
+    );
+    newWords = currentWords.filter(word => word.id !== wordId);
+    newWords = [wordUpdated as TWord, ...newWords];
+  }
+
+  yield put(
+    changeListWords({
+      words: newWords,
+    }),
+  );
+}
+
 interface IAsyncSaveNewWordsDTO {
   type: string;
   payload: {
@@ -129,4 +195,9 @@ export default function* wordsSaga(): Generator<
   yield takeEvery(wordsActions.ASYNC_FETCH_RECENT_WORDS, asyncFetchRecentWords);
   yield takeEvery(wordsActions.ASYNC_SAVE_NEW_WORDS, asyncSaveNewWords);
   yield takeEvery(wordsActions.ASYNC_REMOVE_WORDS, asyncRemoveWord);
+  yield takeEvery(wordsActions.ASYNC_FAVORITE_WORD, asyncFavoriteWord);
+  yield takeEvery(
+    wordsActions.ASYNC_REMOVE_FAVORITE_WORD,
+    asyncRemoveFavoriteWord,
+  );
 }

@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Word from '../../components/Word';
 
 import { IReducerState } from '../../store/rootReducer';
+import colors from '../../utils/colors';
 
 import {
   Container,
   ContainerInputText,
   InputArea,
+  ContainerGroupWordLists,
   ContainerWords,
 } from './styles';
 
@@ -39,23 +41,26 @@ const AllWords: React.FC = () => {
           placeholder="Type your new words here..."
         />
       </ContainerInputText>
-      <ContainerWords>
+      <ContainerGroupWordLists>
         <span className="list-words__title">
           {`You've ${words.length} listed words`}
         </span>
-        {words.length > 0 ? (
-          words.map((currentWord, index) => (
-            <Word
-              url={currentWord.url}
-              word={currentWord.word}
-              wordId={currentWord.id}
-              key={`${currentWord.word}-${index}`}
-            />
-          ))
-        ) : (
-          <span className="list-words__warning">No words to be listed</span>
-        )}
-      </ContainerWords>
+        <ContainerWords border_color={colors.light.home.words.background_color}>
+          {words.length > 0 ? (
+            words.map((currentWord, index) => (
+              <Word
+                url={currentWord.url}
+                word={currentWord.word}
+                wordId={currentWord.id}
+                favoritedAt={currentWord.favorited_at}
+                key={`${currentWord.word}-${index}`}
+              />
+            ))
+          ) : (
+            <span className="list-words__warning">No words to be listed</span>
+          )}
+        </ContainerWords>
+      </ContainerGroupWordLists>
     </Container>
   );
 };

@@ -4,12 +4,16 @@ import { TWord } from '../../@types';
 interface IWordsActions {
   ASYNC_FETCH_ALL_WORDS: string;
   ASYNC_FETCH_RECENT_WORDS: string;
+  ASYNC_FAVORITE_WORD: string;
+  ASYNC_REMOVE_FAVORITE_WORD: string;
   ASYNC_REMOVE_WORDS: string;
   ASYNC_SAVE_NEW_WORDS: string;
   CHANGE_LIST_WORDS: string;
 }
 
 const wordsActions = {
+  ASYNC_FAVORITE_WORD: '@words/ASYNC_FAVORITE_WORD',
+  ASYNC_REMOVE_FAVORITE_WORD: '@words/ASYNC_REMOVE_FAVORITE_WORD',
   ASYNC_FETCH_ALL_WORDS: '@words/ASYNC_FETCH_ALL_WORDS',
   ASYNC_REMOVE_WORDS: '@words/ASYNC_REMOVE_WORDS',
   ASYNC_FETCH_RECENT_WORDS: '@words/ASYNC_FETCH_RECENT_WORDS',
@@ -52,6 +56,46 @@ export const asyncRemoveWord = ({
   wordId,
 }: IAsyncRemoveWordDTO): IAsyncRemoveWordResponse => ({
   type: wordsActions.ASYNC_REMOVE_WORDS,
+  payload: {
+    wordId,
+  },
+});
+
+interface IAsyncFavoriteWordDTO {
+  wordId: string;
+}
+
+interface IAsyncFavoriteWordResponse {
+  type: string;
+  payload: {
+    wordId: string;
+  };
+}
+
+export const asyncFavoriteWord = ({
+  wordId,
+}: IAsyncFavoriteWordDTO): IAsyncFavoriteWordResponse => ({
+  type: wordsActions.ASYNC_FAVORITE_WORD,
+  payload: {
+    wordId,
+  },
+});
+
+interface IAsyncRemoveFavoriteWordDTO {
+  wordId: string;
+}
+
+interface IAsyncRemoveFavoriteWordResponse {
+  type: string;
+  payload: {
+    wordId: string;
+  };
+}
+
+export const asyncRemoveFavoriteWord = ({
+  wordId,
+}: IAsyncRemoveFavoriteWordDTO): IAsyncRemoveFavoriteWordResponse => ({
+  type: wordsActions.ASYNC_REMOVE_FAVORITE_WORD,
   payload: {
     wordId,
   },

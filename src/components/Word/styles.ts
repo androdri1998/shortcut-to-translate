@@ -8,8 +8,9 @@ interface IPropsContainer {
 
 export const Container = styled.div<IPropsContainer>`
   display: flex;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  align-items: center;
+  margin: 5px;
+  padding-right: 5px;
 
   border-radius: 40px;
   text-decoration: none;
@@ -42,11 +43,11 @@ export const ExcludeButton = styled.button<IPropsExcludeButton>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  height: 30px;
+  width: 30px;
 
   background-color: transparent;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-radius: 40px;
   border: none;
 
   &:hover {

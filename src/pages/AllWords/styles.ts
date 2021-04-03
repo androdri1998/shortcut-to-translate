@@ -40,14 +40,42 @@ export const InputArea = styled.input`
   resize: none;
 `;
 
-export const ContainerWords = styled.section`
+export const ContainerGroupWordLists = styled.section`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
   padding: 20px 0;
+
+  .list-words__title {
+    margin-bottom: 10px;
+    font-size: 1.4em;
+    font-weight: 300;
+
+    width: 100%;
+  }
+
+  .list-words__warning {
+    font-size: 1em;
+    font-weight: 500;
+  }
+`;
+
+interface IContainerWords {
+  border_color: string;
+}
+
+export const ContainerWords = styled.section<IContainerWords>`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+
+  border-left: solid 4px ${props => props.border_color};
 
   .list-words__title {
     margin-bottom: 20px;
