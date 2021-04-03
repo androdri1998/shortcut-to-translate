@@ -23,7 +23,10 @@ const WrapperPagesComponent: React.FC = ({ children }) => {
           >
             All Words
           </ItemNav>
-          <ItemNav color={colors.light.header.nav.item.color} to="#">
+          <ItemNav
+            color={colors.light.header.nav.item.color}
+            to={routesConstants.FAVORITE_WORDS}
+          >
             Favorites Words
           </ItemNav>
         </nav>
