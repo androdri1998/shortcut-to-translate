@@ -20,6 +20,9 @@ interface IThemeColors {
       words: {
         background_color: string;
         color: string;
+        button_exclude: {
+          background_color_hover: string;
+        };
       };
     };
   };
@@ -46,6 +49,9 @@ const themeColors = {
       words: {
         background_color: '#5F00AD',
         color: '#fff',
+        button_exclude: {
+          background_color_hover: '#43007A',
+        },
       },
     },
   },

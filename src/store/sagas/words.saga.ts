@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { takeEvery, put, ForkEffect } from 'redux-saga/effects';
+import { takeEvery, put, ForkEffect, select } from 'redux-saga/effects';
 import { v4 as uuidv4 } from 'uuid';
 
 import SaveWordsSevice from '../../services/SaveWordsSevice';
 import ListRecentWordsService from '../../services/ListRecentWordsService';
 import ListAllWordsService from '../../services/ListAllWordsService';
+import RemoveWordService from '../../services/RemoveWordService';
 import StorageProvider from '../../providers/implementations/StorageProvider';
 
 import appConfig from '../../config/app';
@@ -40,6 +41,34 @@ function* asyncFetchRecentWords() {
   yield put(
     changeListWords({
       words: recentWords,
+    }),
+  );
+}
+
+interface IAsyncRemoveWordDTO {
+  type: string;
+  payload: {
+    wordId: string;
+  };
+}
+
+function* asyncRemoveWord({ payload: { wordId } }: IAsyncRemoveWordDTO) {
+  const storageProvider = new StorageProvider();
+  const removeWordService = new RemoveWordService(storageProvider);
+
+  const { isRemoved } = removeWordService.execute({ wordId });
+
+  let newWords: TWord[] = [];
+  if (isRemoved) {
+    const currentWords: TWord[] = yield select(
+      state => state.wordsReducer.words,
+    );
+    newWords = currentWords.filter(word => word.id !== wordId);
+  }
+
+  yield put(
+    changeListWords({
+      words: newWords,
     }),
   );
 }
@@ -99,4 +128,5 @@ export default function* wordsSaga(): Generator<
   yield takeEvery(wordsActions.ASYNC_FETCH_ALL_WORDS, asyncFetchAllWords);
   yield takeEvery(wordsActions.ASYNC_FETCH_RECENT_WORDS, asyncFetchRecentWords);
   yield takeEvery(wordsActions.ASYNC_SAVE_NEW_WORDS, asyncSaveNewWords);
+  yield takeEvery(wordsActions.ASYNC_REMOVE_WORDS, asyncRemoveWord);
 }

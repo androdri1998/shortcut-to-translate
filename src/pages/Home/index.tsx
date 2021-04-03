@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Word from '../../components/Word';
+import Word from './components/Word';
 
 import { IReducerState } from '../../store/rootReducer';
 import colors from '../../utils/colors';

@@ -48,6 +48,7 @@ const AllWords: React.FC = () => {
             <Word
               url={currentWord.url}
               word={currentWord.word}
+              wordId={currentWord.id}
               key={`${currentWord.word}-${index}`}
             />
           ))
