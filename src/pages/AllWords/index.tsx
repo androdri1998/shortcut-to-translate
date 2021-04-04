@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DateIndicator from '../../components/DateIndicator';
 import Word from '../../components/Word';
 
-import SeparateWordsPerDateService from '../../services/SeparateWordsPerDateService';
+import SeparateWordsPerCreateAtService from '../../services/SeparateWordsPerCreateAtService';
 
 import { IReducerState } from '../../store/rootReducer';
 import colors from '../../utils/colors';
@@ -24,6 +24,7 @@ import { asyncFetchAllWords } from '../../store/actions/words.actions';
 interface IWords {
   [key: string]: TWord[];
 }
+
 const AllWords: React.FC = () => {
   const dispatch = useDispatch();
   const wordsRedux = useSelector(
@@ -38,8 +39,8 @@ const AllWords: React.FC = () => {
   }, [dispatch, wordsText]);
 
   useEffect(() => {
-    const separateWordsPerDateService = new SeparateWordsPerDateService();
-    const wordsSeparated = separateWordsPerDateService.execute({
+    const separateWordsPerCreateAtService = new SeparateWordsPerCreateAtService();
+    const wordsSeparated = separateWordsPerCreateAtService.execute({
       words: wordsRedux,
     });
     setWords(wordsSeparated);

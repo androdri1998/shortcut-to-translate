@@ -79,6 +79,8 @@ const HomePage: React.FC = () => {
             <Word
               url={currentWord.url}
               word={currentWord.word}
+              wordId={currentWord.id}
+              favoritedAt={currentWord.favorited_at}
               key={`${currentWord.word}-${index}`}
             />
           ))

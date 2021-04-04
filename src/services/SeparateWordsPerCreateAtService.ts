@@ -10,7 +10,7 @@ interface IExecuteResponse {
   [key: string]: TWord[];
 }
 
-export default class SeparateWordsPerDateService {
+export default class SeparateWordsPerCreateAtService {
   execute({ words }: IExecuteDTO): IExecuteResponse {
     const wordsSeparated: IExecuteResponse = {};
     const wordsSortedByDate = words.sort((a, b) => {

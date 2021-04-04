@@ -42,8 +42,8 @@ export const InputArea = styled.input`
 
 export const ContainerGroupWordLists = styled.section`
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
-  flex-wrap: wrap;
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
@@ -75,7 +75,14 @@ export const ContainerWords = styled.section<IContainerWords>`
   max-width: 900px;
   margin: 0 auto;
 
-  border-left: solid 4px ${props => props.border_color};
+  .list-words__group-words {
+    margin-bottom: 10px;
+    border-left: solid 4px ${props => props.border_color};
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
 
   .list-words__title {
     margin-bottom: 20px;

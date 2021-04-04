@@ -13,6 +13,10 @@ interface IExecuteResponse {
   all_words: TWord[];
 }
 
+interface IObjectWords {
+  [key: string]: TWord;
+}
+
 export default class SaveWordsService {
   private storageProvider: IStorageProvider;
 
@@ -26,19 +30,25 @@ export default class SaveWordsService {
     });
 
     let wordsToBeSave = [];
+    let wordsToReturn: TWord[] = [];
     if (currentWords) {
-      const arrWords = currentWords.map(
-        (currentWord: TWord) => currentWord.word,
-      );
+      const arrWords: IObjectWords = {};
+      currentWords.forEach((currentWord: TWord) => {
+        arrWords[currentWord.word] = currentWord;
+      });
 
       const wordsNotIncluded: TWord[] = [];
+      const wordsIncluded: TWord[] = [];
       words.forEach((currentWord: TWord) => {
-        if (!arrWords.includes(currentWord.word)) {
+        if (!Object.keys(arrWords).includes(currentWord.word)) {
           wordsNotIncluded.push(currentWord);
+        } else {
+          wordsIncluded.push(arrWords[currentWord.word]);
         }
       });
 
       wordsToBeSave = wordsNotIncluded.concat(currentWords);
+      wordsToReturn = wordsNotIncluded.concat(wordsIncluded);
     } else {
       wordsToBeSave = words;
     }
@@ -48,6 +58,6 @@ export default class SaveWordsService {
       value: wordsToBeSave,
     });
 
-    return { all_words: wordsToBeSave, words };
+    return { all_words: wordsToBeSave, words: wordsToReturn };
   }
 }
