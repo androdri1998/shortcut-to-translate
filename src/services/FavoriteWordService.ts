@@ -26,7 +26,6 @@ export default class FavoriteWordService {
       const favoriteWordIndex = currentWords.findIndex(
         currentWord => currentWord.id === wordId,
       );
-      newWords = currentWords.filter(currentWord => currentWord.id !== wordId);
 
       const favoritedAt = new Date().toISOString();
       favoriteWord = {
@@ -34,7 +33,11 @@ export default class FavoriteWordService {
         favorited_at: favoritedAt,
       };
 
-      newWords = [favoriteWord, ...newWords];
+      newWords = [
+        ...currentWords.slice(0, favoriteWordIndex),
+        favoriteWord,
+        ...currentWords.slice(favoriteWordIndex + 1, currentWords.length),
+      ];
     }
 
     this.storageProvider.store({

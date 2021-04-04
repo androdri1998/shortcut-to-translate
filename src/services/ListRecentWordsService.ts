@@ -16,13 +16,22 @@ export default class ListRecentWordsService {
   }
 
   execute(): IExecuteResponse {
-    const currentWords = this.storageProvider.get({
+    const currentWords: TWord[] = this.storageProvider.get({
       key: keyStoreConstants.WORDS,
     });
 
-    let recentWords = [];
+    let recentWords: TWord[] = [];
     if (currentWords) {
-      recentWords = currentWords.slice(0, 15);
+      const wordsSortedByDate = currentWords.sort((a, b) => {
+        if (a.created_at < b.created_at) {
+          return 1;
+        }
+        if (a.created_at > b.created_at) {
+          return -1;
+        }
+        return 0;
+      });
+      recentWords = wordsSortedByDate.slice(0, 15);
     }
 
     return { recent_words: recentWords };

@@ -120,8 +120,16 @@ function* asyncFavoriteWord({ payload: { wordId } }: IAsyncFavoriteWordDTO) {
     const currentWords: TWord[] = yield select(
       state => state.wordsReducer.words,
     );
-    newWords = currentWords.filter(word => word.id !== wordId);
-    newWords = [wordUpdated as TWord, ...newWords];
+
+    const favoriteWordIndex = currentWords.findIndex(
+      word => word.id === wordId,
+    );
+
+    newWords = [
+      ...currentWords.slice(0, favoriteWordIndex),
+      wordUpdated as TWord,
+      ...currentWords.slice(favoriteWordIndex + 1, currentWords.length),
+    ];
   }
 
   yield put(
@@ -155,8 +163,16 @@ function* asyncRemoveFavoriteWord({
     const currentWords: TWord[] = yield select(
       state => state.wordsReducer.words,
     );
-    newWords = currentWords.filter(word => word.id !== wordId);
-    newWords = [wordUpdated as TWord, ...newWords];
+
+    const favoriteWordIndex = currentWords.findIndex(
+      word => word.id === wordId,
+    );
+
+    newWords = [
+      ...currentWords.slice(0, favoriteWordIndex),
+      wordUpdated as TWord,
+      ...currentWords.slice(favoriteWordIndex + 1, currentWords.length),
+    ];
   }
 
   yield put(
@@ -226,7 +242,7 @@ function* asyncSaveNewWords({ payload: { wordsText } }: IAsyncSaveNewWordsDTO) {
     if (currentWord.word_trim !== '') {
       listWords.push({
         id: uuidv4(),
-        date: new Date().toISOString(),
+        created_at: new Date().toISOString(),
         word: currentWord.word_trim,
         word_sanitalized: wordFiltered,
         url: `${appConfig.site_to_translate}/${wordFiltered}`,

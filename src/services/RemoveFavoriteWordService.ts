@@ -26,14 +26,17 @@ export default class RemoveFavoriteWordService {
       const favoriteWordIndex = currentWords.findIndex(
         currentWord => currentWord.id === wordId,
       );
-      newWords = currentWords.filter(currentWord => currentWord.id !== wordId);
 
       favoriteWord = {
         ...currentWords[favoriteWordIndex],
         favorited_at: null,
       };
 
-      newWords = [favoriteWord, ...newWords];
+      newWords = [
+        ...currentWords.slice(0, favoriteWordIndex),
+        favoriteWord,
+        ...currentWords.slice(favoriteWordIndex + 1, currentWords.length),
+      ];
     }
 
     this.storageProvider.store({
