@@ -62,7 +62,7 @@ const AllWords: React.FC = () => {
       </ContainerInputText>
       <ContainerGroupWordLists>
         <span className="list-words__title">
-          {`You've ${wordsRedux.length} listed words`}
+          {`You've ${wordsRedux.length} words listed`}
         </span>
         <ContainerWords border_color={colors.light.home.words.background_color}>
           {Object.keys(words).length > 0 ? (
@@ -71,7 +71,10 @@ const AllWords: React.FC = () => {
                 className="list-words__group-words"
                 key={`${currentDate}-${indexDate}`}
               >
-                <DateIndicator date={currentDate} />
+                <DateIndicator
+                  date={currentDate}
+                  length={words[currentDate].length}
+                />
                 {words[currentDate].map((currentWord, index) => (
                   <Word
                     url={currentWord.url}

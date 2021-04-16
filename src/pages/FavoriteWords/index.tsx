@@ -71,7 +71,10 @@ const AllWords: React.FC = () => {
                 className="list-words__group-words"
                 key={`${currentDate}-${indexDate}`}
               >
-                <DateIndicator date={currentDate} />
+                <DateIndicator
+                  date={currentDate}
+                  length={words[currentDate].length}
+                />
                 {words[currentDate].map((currentWord, index) => (
                   <Word
                     url={currentWord.url}

@@ -5,8 +5,9 @@ import { Container } from './styles';
 
 interface IDateIndicator {
   date: string;
+  length: number;
 }
-const DateIndicator: React.FC<IDateIndicator> = ({ date }) => {
+const DateIndicator: React.FC<IDateIndicator> = ({ date, length }) => {
   const year = useMemo(() => {
     const currentYear = date.split('-')[0];
     return currentYear;
@@ -41,10 +42,12 @@ const DateIndicator: React.FC<IDateIndicator> = ({ date }) => {
   return (
     <Container color={colors.light.home.words.background_color}>
       <span className="date-indicator__day">{day}</span>
-      <span className="date-indicator__describe">of</span>
       <span className="date-indicator__month">{month}</span>
       <span className="date-indicator__describe">of</span>
       <span className="date-indicator__year">{year}</span>
+      <span className="date-indicator__describe">
+        {` - ${length} words listed at day`}
+      </span>
     </Container>
   );
 };
